@@ -13,6 +13,7 @@ var Ingredient = __db.Ingredient;
 
 router.use(bodyParser.json());
 
+//Get all order by the specific user
 router.get('/order/:username',function(req,res){
   Order.findAll({raw:true,attributes: ['food_name', 'food_quantity', 'cost'],where: {customer_name: req.params.username}}).then(function(order_info){
     return res.status(200).send("All orders placed by user :"+req.params.username+"\r\n"+ JSON.stringify(order_info));
@@ -21,6 +22,7 @@ router.get('/order/:username',function(req,res){
   })
 });
 
+//GET items with high production cost  
 router.get('/cost_diff',function(req,res) {
   Food.findAll({raw:true, where: { production_cost: {[Op.gt]: Sequelize.col('selling_cost')}}}).then(function(cost_diff){
     return res.status(200).send("Food's which selling cost is more than production_cost:"+JSON.stringify(cost_diff));
@@ -29,6 +31,7 @@ router.get('/cost_diff',function(req,res) {
   })
 })
 
+// Order creation
 router.post('/order', function(req, res) {
   var req_body=req.body
   User.findOne({raw:true,where: {username: req_body.username,user_status:true}}).then(function(user){
@@ -44,7 +47,9 @@ router.post('/order', function(req, res) {
           req_body.cost = amount;
           req_body.order_status = "Recived";
           Order.create(req_body).then(function(order){
+            // check the ingridient is available
             Ingredient.findOne({raw:true,where: {ingredient_name: food_info.ingredient}}).then(function(ingredient){
+              // check quantity is available to serve order
               if(ingredient.available_quantity){
                 var quantity = ingredient.available_quantity - req_body.food_quantity  
                 Ingredient.update({available_quantity: quantity},{where:{ingredient_name: food_info.ingredient}}).then(function (ingredient_update) {

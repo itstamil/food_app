@@ -20,6 +20,7 @@ router.get('/:vendor',function(req,res){
 });
 
 
+// Check quantity which is got reduced
 router.get('/available/quantity',function(req,res) {
   Ingredient.findAll({raw:true,attributes: ['ingredient_name'], where: { available_quantity: {[Op.lt]: Sequelize.col('threshold_quantity')}}}).then(function(stock_diff){
     console.log(stock_diff)
