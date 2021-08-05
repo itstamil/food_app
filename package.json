@@ -1,0 +1,24 @@
+{
+  "name": "food_app",
+  "version": "1.0.1",
+  "description": "An app to order food and manage ingredient",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "food",
+    "app"
+  ],
+  "author": "Tamilvalavan Shanmugam",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "edit-json-file": "^1.6.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "sequelize": "^6.6.5",
+    "sqlite3": "^5.0.2"
+  }
+}
